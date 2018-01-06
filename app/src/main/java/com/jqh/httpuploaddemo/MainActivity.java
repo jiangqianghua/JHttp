@@ -6,6 +6,10 @@ import android.view.View;
 
 import com.alibaba.fastjson.JSON;
 import com.jqh.httpuploaddemo.entity.UserInfo;
+import com.jqh.httpuploaddemo.task.HttpListener;
+import com.jqh.httpuploaddemo.task.Request;
+import com.jqh.httpuploaddemo.task.RequestExecutor;
+import com.jqh.httpuploaddemo.task.Response;
 import com.jqh.httpuploaddemo.utils.Constants;
 import com.jqh.httpuploaddemo.utils.Logger;
 import com.jqh.httpuploaddemo.utils.ThreadUtils;
@@ -38,10 +42,23 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
      * Get请求
      */
     private void getRequest(){
-        ThreadUtils.execute(new Runnable() {
+//        ThreadUtils.execute(new Runnable() {
+//            @Override
+//            public void run() {
+//                executeGet();
+//            }
+//        });
+
+        Request request = new Request("http://www.baidu.com");
+        RequestExecutor.INTANCE.execute(request, new HttpListener() {
             @Override
-            public void run() {
-                executeGet();
+            public void onSuccessed(Response response) {
+                Logger.i("结果："+response.getResult());
+            }
+
+            @Override
+            public void onFailed(Exception e) {
+
             }
         });
     }
